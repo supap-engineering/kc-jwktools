@@ -1,0 +1,22 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          { "path": "dist/app.tar.gz", "label": "Application Binary (tar.gz)" },
+          { "path": "dist/app.zip", "label": "Application Binary (zip)" }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": false
+      }
+    ]
+  ]
+}

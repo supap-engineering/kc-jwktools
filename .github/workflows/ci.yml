@@ -1,0 +1,50 @@
+name: JwtTools
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, x64, supap-eng]
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Save version
+        id: version
+        run: echo ::set-output name=tag::$(git describe --tags --always)
+
+      - name: Push new version
+        run: git push
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+  
+      - name: Install semantic-release
+        run: npm install
+
+      - name: Run semantic-release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Clean up Go cache
+        if: always()
+        run: go clean -cache -modcache
