@@ -1,13 +1,14 @@
 name: JwtTools
-on: workflow_dispatch
-
+on:
+  push:
+    branches: [ "main" ]
+    
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, x64, supap-eng]
-    defaults:
-      run:
-        working-directory: .
-
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +21,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.23"
+          go-version: "1.21"
 
       - name: Install dependencies
         run: go mod tidy
@@ -28,9 +29,6 @@ jobs:
       - name: Save version
         id: version
         run: echo ::set-output name=tag::$(git describe --tags --always)
-
-      - name: Push new version
-        run: git push
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
