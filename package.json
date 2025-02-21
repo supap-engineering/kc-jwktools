@@ -1,13 +1,13 @@
 {
-  "name": "revkeep_be_epic_fetchstore",
+  "name": "kc-jwktools",
   "version": "1.0.0",
-  "description": "The Epic Fetchstore Service",
+  "description": "Keycloak JWK tools Service",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "revkeep",
+  "author": "supap",
   "license": "ISC",
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
